@@ -7,15 +7,27 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.google.gms.google.services)
 }
 
 kotlin {
+    androidTarget {
+        compilations.all {
+            kotlinOptions {
+                jvmTarget = "11"
+            }
+        }
+    }
+
+    /*
     androidTarget {
         @OptIn(ExperimentalKotlinGradlePluginApi::class)
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_11)
         }
     }
+
+     */
     
     listOf(
         iosX64(),
@@ -37,10 +49,21 @@ kotlin {
         commonMain.dependencies {
             implementation(compose.runtime)
             implementation(compose.foundation)
-            implementation(compose.material)
+            implementation(compose.material3)
             implementation(compose.ui)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
+
+
+           // implementation(libs.lifecycleViewmodel)
+            implementation(libs.navigator)
+            implementation(libs.navigator.screen.model)
+            implementation(libs.navigator.transitions)
+            implementation(libs.navigator.koin)
+            api(libs.koin.core)
+
+            implementation("dev.gitlive:firebase-database:1.13.0")
+            implementation("co.touchlab:stately-common:2.0.5")
         }
     }
 }
@@ -80,5 +103,12 @@ android {
     dependencies {
         debugImplementation(compose.uiTooling)
     }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.12"
+    }
+}
+dependencies {
+    implementation(libs.firebase.database)
+
 }
 

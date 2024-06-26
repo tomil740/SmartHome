@@ -1,6 +1,6 @@
-package controlCenter.domain.util
+package controlCenter.domain.models.util
 
-import androidx.compose.material.MaterialTheme
+
 import androidx.compose.ui.graphics.Color
 
 data class ComponentTheme(

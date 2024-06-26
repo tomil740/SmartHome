@@ -1,61 +1,52 @@
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.Button
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import controlCenter.domain.models.ComponentItemModule
-import controlCenter.domain.models.SensorItemModule
-import controlCenter.domain.util.ComponentTheme
-import controlCenter.presentation.controlCenterScreen.ControlCenterScreen
-import controlCenter.presentation.controlCenterScreen.ControlCenterScreenStatesAndEvents
-import controlCenter.presentation.uiComponeants.ComponentItem
-import controlCenter.presentation.uiComponeants.ComponentItemPreview
-import org.jetbrains.compose.resources.painterResource
-import org.jetbrains.compose.ui.tooling.preview.Preview
+import cafe.adriel.voyager.navigator.Navigator
+import controlCenter.data.remoteDb.RemoteDbFactory
+import controlCenter.domain.models.theModels.ComponentItemModule
+import controlCenter.domain.models.theModels.SensorItemModule
+import controlCenter.domain.models.util.ComponentTheme
 
-import smarthome.composeapp.generated.resources.Res
-import smarthome.composeapp.generated.resources.compose_multiplatform
+import controlCenter.presentation.controlCenterScreen.ControlCenterScreen
+import controlCenter.presentation.controlCenterScreen.ControlCenterScreenClass
+import controlCenter.presentation.controlCenterScreen.ControlCenterScreenStatesAndEvents
+import controlCenter.presentation.controlCenterScreen.ControlCenterUiState
+import controlCenter.presentation.controlCenterScreen.ControlCenterViewmodel
+import core.presentation.AppTheme
+import di.appModule
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import org.jetbrains.compose.ui.tooling.preview.Preview
+import org.koin.core.context.startKoin
 
 @Composable
 @Preview
-fun App() {
-
-    val theLst = mutableListOf<SensorItemModule>()
-    val theLst2 = mutableListOf<ComponentItemModule>()
-    repeat(3){
-        theLst.add(
-            SensorItemModule(
-                name = "House temp",
-                state = 36,
-                componentTheme = ComponentTheme(backgroundColor = MaterialTheme.colors.secondary, textColor = MaterialTheme.colors.onSecondary)
-            )
-        )
+fun App(
+    darkTheme: Boolean =false,
+    dynamicColor: Boolean=true
+) {
+    //todo : need to figure out how that should be realy solve (init / some intalize function ...)
+    try {
+        initializeKoin()
+    }catch (e:Exception){
+        //
     }
-    repeat(6){
-        theLst2.add(
-            ComponentItemModule(
-                name = "Air conditioner",
-                state = true,
-                componentTheme = ComponentTheme(backgroundColor = MaterialTheme.colors.secondaryVariant, textColor = MaterialTheme.colors.onSecondary)
-            )
-        )
-    }
-
-    MaterialTheme {
-        Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
-            ControlCenterScreen(
-                controlCenterScreenStatesAndEvents = ControlCenterScreenStatesAndEvents(
-                    isConnected = true,
-                    componentsList = theLst2,
-                    sensorsList = theLst,
-                    onComponentClick = {}
-                ), modifier = Modifier.fillMaxWidth()
-            )
-        }
+    AppTheme(
+        darkTheme = darkTheme,
+        dynamicColor = dynamicColor
+    ) {
+       Navigator(ControlCenterScreenClass())
     }
 }
+fun initializeKoin() {
+    startKoin {
+        modules(appModule)
+    }
+}
+
+
+
