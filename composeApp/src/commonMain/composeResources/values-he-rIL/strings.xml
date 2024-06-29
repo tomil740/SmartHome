@@ -1,0 +1,11 @@
+<resources>
+
+    <string name="Connected">מחובר</string>
+    <string name="UnConnected">ללא תקשורת</string>
+    <string name="SensorsHeader">חיישנים :</string>
+    <string name="InteractiveComponentsHeader">רכיבים נשלטים :</string>
+    <string name="ConnectedDevicePreFix">%1$s מחוברים כעת :</string>
+    <string name="unSync_ErrorMes">ללא תקשורת \n בדוק את חיבור האינטרנט...</string>
+
+
+</resources>

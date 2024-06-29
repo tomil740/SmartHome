@@ -1,9 +1,12 @@
 package controlCenter.domain.useCases
 
+import controlCenter.domain.models.core.Components
 import controlCenter.domain.models.domainObjects.ComponentItemStateDomain
 import controlCenter.domain.models.theModels.ComponentItemModule
 import controlCenter.domain.models.theModels.SensorItemModule
 import controlCenter.domain.models.util.DomainModulesObj
+import controlCenter.domain.models.util.getComponentIcon
+import controlCenter.domain.repository.Repository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
@@ -31,9 +34,9 @@ components the app will work as fast and reliable as possible
  */
 
 
-class FetchComponentsData {
+class FetchComponentsData() {
 
-   suspend operator fun invoke(data : List<ComponentItemStateDomain>):Deferred<DomainModulesObj>{
+    operator fun invoke(data : List<ComponentItemStateDomain>):Deferred<DomainModulesObj>{
 
         return CoroutineScope(Dispatchers.IO).async{
 
@@ -41,17 +44,22 @@ class FetchComponentsData {
             val components = mutableListOf<ComponentItemModule>()
 
             for (i in data) {
+
+                val icon = getComponentIcon(Components.valueOf(i.name))
+
                 if (i.state.toInt() == -2147483647 ||i.state.toInt()== 2147483647){
                     components.add(
                         ComponentItemModule(
                             name = i.name,
                             state = i.state>0,
+                            icon=icon
                         )
                     )
                 }else {
                     sensors.add(SensorItemModule(
                         name = i.name,
-                        state = i.state
+                        state = i.state,
+                        icon=icon
                     )
                     )
                 }
@@ -59,14 +67,8 @@ class FetchComponentsData {
 
             DomainModulesObj(
                 interActiveComponents = components,
-                sensorComponents = sensors
+                sensorComponents = sensors,
             )
-
-
-
-
-
-
         }
     }
 

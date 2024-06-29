@@ -1,7 +1,11 @@
 <resources>
 
-    <string name="connected">Connected</string>
-    <string name="unConnected">unConnected</string>
+    <string name="Connected">Connected</string>
+    <string name="UnConnected">unConnected</string>
+    <string name="SensorsHeader">Sensors :</string>
+    <string name="InteractiveComponentsHeader">Interactive components :</string>
+    <string name="ConnectedDevicePreFix">%1$s devices are connected :</string>
+    <string name="unSync_ErrorMes">Isnt sync ,\n Try to connect...</string>
 
 
 </resources>
